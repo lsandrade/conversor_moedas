@@ -14,16 +14,40 @@ class _HomeState extends State<Home> {
   double dolar;
   double euro;
 
+  void _resetAll() {
+    dolarController.text = "";
+    euroController.text = "";
+    realController.text = "";
+  }
+
   void _realChanged(String text) {
-    print(text);
+    if (text.isEmpty) {
+      _resetAll();
+      return;
+    }
+    double real = double.parse(text);
+    dolarController.text = (real / dolar).toStringAsFixed(2);
+    euroController.text = (real / euro).toStringAsFixed(2);
   }
 
   void _dolarChanged(String text) {
-    print(text);
+    if (text.isEmpty) {
+      _resetAll();
+      return;
+    }
+    double dolar = double.parse(text);
+    realController.text = (dolar * this.dolar).toStringAsFixed(2);
+    euroController.text = (dolar * this.dolar / euro).toStringAsFixed(2);
   }
 
   void _euroChanged(String text) {
-    print(text);
+    if (text.isEmpty) {
+      _resetAll();
+      return;
+    }
+    double euro = double.parse(text);
+    realController.text = (euro * this.euro).toStringAsFixed(2);
+    dolarController.text = (euro * this.euro / dolar).toStringAsFixed(2);
   }
 
   @override
@@ -78,9 +102,12 @@ class _HomeState extends State<Home> {
                           size: 150.0,
                           color: Colors.amber,
                         ),
-                        buildTextField("Reais", "R\$", realController, _realChanged),
-                        buildTextField("Dolar", "US\$", dolarController, _dolarChanged),
-                        buildTextField("Euro", "€", euroController, _euroChanged)
+                        buildTextField(
+                            "Reais", "R\$", realController, _realChanged),
+                        buildTextField(
+                            "Dolar", "US\$", dolarController, _dolarChanged),
+                        buildTextField(
+                            "Euro", "€", euroController, _euroChanged)
                       ],
                     ),
                   );
@@ -93,8 +120,8 @@ class _HomeState extends State<Home> {
   }
 }
 
-buildTextField(String label, String prefix, TextEditingController controller,
-    Function f) {
+buildTextField(
+    String label, String prefix, TextEditingController controller, Function f) {
   return TextField(
     controller: controller,
     decoration: InputDecoration(
