@@ -7,8 +7,24 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final realController = TextEditingController();
+  final dolarController = TextEditingController();
+  final euroController = TextEditingController();
+
   double dolar;
   double euro;
+
+  void _realChanged(String text) {
+    print(text);
+  }
+
+  void _dolarChanged(String text) {
+    print(text);
+  }
+
+  void _euroChanged(String text) {
+    print(text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,30 +78,9 @@ class _HomeState extends State<Home> {
                           size: 150.0,
                           color: Colors.amber,
                         ),
-                        TextField(
-                          decoration: InputDecoration(
-                              labelText: "Reais",
-                              labelStyle: TextStyle(color: Colors.amber),
-                              border: OutlineInputBorder(),
-                              prefixText: "R\$"),
-                          style: TextStyle(color: Colors.amber, fontSize: 24.0),
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                              labelText: "Dolar",
-                              labelStyle: TextStyle(color: Colors.amber),
-                              border: OutlineInputBorder(),
-                              prefixText: "US\$"),
-                          style: TextStyle(color: Colors.amber, fontSize: 24.0),
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                              labelText: "Euro",
-                              labelStyle: TextStyle(color: Colors.amber),
-                              border: OutlineInputBorder(),
-                              prefixText: "€"),
-                          style: TextStyle(color: Colors.amber, fontSize: 24.0),
-                        )
+                        buildTextField("Reais", "R\$", realController, _realChanged),
+                        buildTextField("Dolar", "US\$", dolarController, _dolarChanged),
+                        buildTextField("Euro", "€", euroController, _euroChanged)
                       ],
                     ),
                   );
@@ -96,4 +91,19 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+}
+
+buildTextField(String label, String prefix, TextEditingController controller,
+    Function f) {
+  return TextField(
+    controller: controller,
+    decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.amber),
+        border: OutlineInputBorder(),
+        prefixText: prefix),
+    style: TextStyle(color: Colors.amber, fontSize: 24.0),
+    onChanged: f,
+    keyboardType: TextInputType.number,
+  );
 }
